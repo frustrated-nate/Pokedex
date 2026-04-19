@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TextInput, StyleSheet, ActivityIndicator } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { getPokemons, getPokemonDetails } from '../services/api';
 import { Pokemon } from '../types/Pokemon';
 import { PokemonCard } from '../components/PokemonCard';
 
-export const PokedexScreen = () => {
+type RootStackParamList = {
+  Pokedex: undefined;
+  PokemonDetail: { pokemon: Pokemon };
+};
+
+type Props = NativeStackScreenProps<RootStackParamList, 'Pokedex'>;
+
+export const PokedexScreen = ({ navigation }: Props) => {
   const insets = useSafeAreaInsets();
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [search, setSearch] = useState('');
@@ -70,7 +78,12 @@ export const PokedexScreen = () => {
             data={filtered}
             keyExtractor={item => item.id.toString()}
             numColumns={2}
-            renderItem={({ item }) => <PokemonCard pokemon={item} />}
+            renderItem={({ item }) => (
+              <PokemonCard
+                pokemon={item}
+                onPress={() => navigation.navigate('PokemonDetail', { pokemon: item })}
+              />
+            )}
             onEndReached={loadMorePokemons}
             onEndReachedThreshold={0.5}
             ListFooterComponent={() =>
@@ -96,7 +109,7 @@ export const PokedexScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, paddingTop: 60, paddingHorizontal: 16 },
+  container: { flex: 1, paddingHorizontal: 16 },
   title: { fontSize: 32, fontWeight: 'bold', marginBottom: 12 },
   input: {
     backgroundColor: '#f1f1f1',
@@ -109,4 +122,5 @@ const styles = StyleSheet.create({
   emptyContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: 50 },
   emptyText: { fontSize: 18, color: '#666', textAlign: 'center' },
   footerContainer: { paddingVertical: 16, alignItems: 'center' },
-  footerText: { marginTop: 8, color: '#666' },});
+  footerText: { marginTop: 8, color: '#666' },
+});
