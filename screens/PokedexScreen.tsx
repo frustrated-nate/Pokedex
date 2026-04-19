@@ -51,6 +51,13 @@ export const PokedexScreen = () => {
             keyExtractor={item => item.id.toString()}
             numColumns={2}
             renderItem={({ item }) => <PokemonCard pokemon={item} />}
+            ListEmptyComponent={() => (
+              <View style={styles.emptyContainer}>
+                <Text style={styles.emptyText}>
+                  {search ? `Nenhum Pokémon encontrado para '${search}'` : 'Nenhum Pokémon para exibir no momento.'}
+                </Text>
+              </View>
+            )}
           />
         </>
       )}
@@ -69,4 +76,6 @@ const styles = StyleSheet.create({
   },
   loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   errorContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  emptyContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: 50 },
+  emptyText: { fontSize: 18, color: '#666', textAlign: 'center' },
 });
