@@ -1,18 +1,19 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Pokemon } from '../types/Pokemon';
 import { capitalize } from '../utils/format';
 
 interface Props {
   pokemon: Pokemon;
+  onPress?: () => void;
 }
 
-export const PokemonCard = ({ pokemon }: Props) => {
+export const PokemonCard = ({ pokemon, onPress }: Props) => {
   return (
-    <View style={styles.card}>
-      <Image source = {{ uri: pokemon.image }} style={styles.image} />
+    <TouchableOpacity onPress={onPress} style={styles.card} activeOpacity={0.8}>
+      <Image source={{ uri: pokemon.image }} style={styles.image} />
       <Text style={styles.name}>{capitalize(pokemon.name)}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
