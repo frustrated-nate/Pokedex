@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TextInput, StyleSheet, ActivityIndicator } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getPokemons, getPokemonDetails } from '../services/api';
 import { Pokemon } from '../types/Pokemon';
 import { PokemonCard } from '../components/PokemonCard';
 
 export const PokedexScreen = () => {
+  const insets = useSafeAreaInsets();
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [search, setSearch] = useState('');
   const [offset, setOffset] = useState(0);
@@ -46,7 +48,7 @@ export const PokedexScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingTop: insets.top + 20 }]}>
       {isLoading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" />
